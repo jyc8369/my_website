@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subculture Tracker | Project Detail</title>
+  <meta name="description" content="Subculture Tracker 개발 문서. 가챠 기록 수집, 구조, 실행 방법, 디버깅, 패키징까지 정리한 프로젝트 상세 페이지입니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/project.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="container">
+      <a class="brand" href="../../main.html">JYC8369</a>
+      <div class="links">
+        <a href="../../main.html">Home</a>
+        <a href="../../projects.html">Projects</a>
+        <a href="../../blog.html">Blog</a>
+        <a href="Subculture_Tracker.html" aria-current="page">Detail</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="라이트 모드로 전환">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <span class="kicker">Project Detail</span>
+      <h1>Subculture Tracker</h1>
+      <p class="summary">Wuthering Waves와 Arknights Endfield의 가챠 기록을 자동 수집해 공통 JSON으로 변환하고, 웹 UI로 확인하는 도구의 개발 문서입니다.</p>
+      <div class="actions">
+        <a class="btn primary" href="#overview">Overview</a>
+        <a class="btn" href="#structure">Structure</a>
+        <a class="btn" href="#run">Run</a>
+        <a class="btn" href="https://github.com/jyc8369/subculture_tracker" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn" href="../../projects.html">목록으로</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="overview">
+      <div class="container panel">
+        <h2>Overview</h2>
+        <p>Subculture Tracker는 로컬 게임 로그 및 캐시 파일에서 토큰과 URL을 추출하고, 게임 서버 API를 호출해 가챠 기록을 수집하는 Windows 기반 도구입니다.</p>
+        <div class="demo" style="margin-top: 16px; overflow: hidden;">
+          <img src="source/video.gif" alt="Subculture Tracker demo animation" style="max-width: 100%; height: auto; display: block;">
+        </div>
+        <div class="feature-list">
+          <div class="feature"><strong>Supported Games</strong> Wuthering Waves(`wuwa`)와 Arknights Endfield(`endfield`)를 지원합니다.</div>
+          <div class="feature"><strong>Output</strong> 게임별 데이터를 공통 JSON 형식으로 저장합니다.</div>
+          <div class="feature"><strong>UI</strong> Flask + pywebview 또는 브라우저 모드로 결과를 확인합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="environment">
+      <div class="container panel">
+        <h2>Development Environment</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Python</strong> Python 3.7 이상</div>
+          <div class="feature"><strong>Flask</strong> `Flask&gt;=3.0`</div>
+          <div class="feature"><strong>HTTP</strong> `requests&gt;=2.0`</div>
+          <div class="feature"><strong>Parsing</strong> `beautifulsoup4&gt;=4.0`</div>
+          <div class="feature"><strong>Desktop UI</strong> `pywebview&gt;=3.0`</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="run">
+      <div class="container panel">
+        <h2>Run</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Basic</strong> <code class="code">python run.py</code>로 실행합니다.</div>
+          <div class="feature"><strong>Dev Browser</strong> <code class="code">python run.py -dev</code>로 브라우저 모드를 사용합니다.</div>
+          <div class="feature"><strong>Virtualenv</strong> PowerShell 기준 <code class="code">python -m venv .venv</code> 후 <code class="code">.\.venv\Scripts\Activate.ps1</code>로 활성화합니다.</div>
+          <div class="feature"><strong>Install</strong> <code class="code">pip install -r requirements.txt</code>로 의존성을 설치합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="runtime">
+      <div class="container panel">
+        <h2>Runtime Flow</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Admin Re-run</strong> Windows에서 관리자 권한이 아니면 자동으로 관리자 권한 재실행을 시도합니다.</div>
+          <div class="feature"><strong>Console Hide</strong> Windows에서 <code class="code">pythonw.exe</code>를 재실행해 콘솔 표시를 줄입니다.</div>
+          <div class="feature"><strong>Logging</strong> 실행 시 <code class="code">lastlog.log</code>를 생성해 앱 로그를 기록합니다.</div>
+          <div class="feature"><strong>Frontend</strong> <code class="code">backend.web.run(use_browser=dev_mode)</code>로 Flask와 UI를 함께 구동합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="structure">
+      <div class="container panel">
+        <h2>Structure</h2>
+        <pre>. 
+├── run.py
+├── requirements.txt
+├── SCT.spec
+├── build-exe.ps1
+├── README.md
+├── README_dev.md
+├── backend/
+│   ├── web.py
+│   ├── endfield.py
+│   ├── wuwa.py
+│   └── webview.py
+├── data/
+└── web/</pre>
+        <div class="feature-list">
+          <div class="feature"><strong>run.py</strong> 진입점, 권한 확인, Flask 서버 시작을 담당합니다.</div>
+          <div class="feature"><strong>backend/</strong> 실제 수집과 웹 UI 로직을 분리합니다.</div>
+          <div class="feature"><strong>web/</strong> 정적 HTML, CSS, JS 리소스가 위치합니다.</div>
+          <div class="feature"><strong>data/</strong> 수집 결과 JSON과 설정 파일을 저장합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="backend">
+      <div class="container panel">
+        <h2>Backend Details</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>backend/web.py</strong> Flask 앱 초기화, API 엔드포인트, 작업 큐, 백그라운드 워커를 관리합니다.</div>
+          <div class="feature"><strong>backend/wuwa.py</strong> 로그에서 마지막 가챠 기록 URL을 찾고 서버 API를 호출해 데이터를 수집합니다.</div>
+          <div class="feature"><strong>backend/endfield.py</strong> 캐시 파일에서 토큰을 추출하고 Endfield 기록을 페이징 수집합니다.</div>
+          <div class="feature"><strong>backend/webview.py</strong> pywebview 네이티브 창을 생성합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="data">
+      <div class="container panel">
+        <h2>Data Model</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Wuwa Output</strong> <code class="code">data/wuwa_&lt;profilename&gt;.json</code> 형식으로 저장합니다.</div>
+          <div class="feature"><strong>Endfield Output</strong> <code class="code">data/endfield_&lt;profilename&gt;.json</code> 형식으로 저장합니다.</div>
+          <div class="feature"><strong>Schema</strong> <code class="code">id</code>와 <code class="code">banners</code>를 중심으로 공통 스키마를 사용합니다.</div>
+          <div class="feature"><strong>Dedup</strong> 동일 ID, 토큰 기준의 이전 결과 파일은 중복 제거합니다.</div>
+        </div>
+        <pre>{
+  "id": "user-or-token",
+  "banners": [
+    {
+      "bannerName": "풀 이름",
+      "items": [
+        {
+          "type": 1,
+          "seqId": "123456",
+          "name": "캐릭터 이름",
+          "rarity": "5",
+          "timestamp": 1680000000000
+        }
+      ]
+    }
+  ]
+}</pre>
+      </div>
+    </section>
+
+    <section id="debug">
+      <div class="container panel">
+        <h2>Debug & Logs</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>lastlog.log</strong> 백엔드 로그가 기록됩니다.</div>
+          <div class="feature"><strong>Unified Logging</strong> Flask 요청 로그와 <code class="code">werkzeug</code> 로그를 같은 로거로 출력합니다.</div>
+          <div class="feature"><strong>Error Tracking</strong> HTTP 요청 실패, JSON 파싱 오류, 파일 I/O 오류를 기록합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="build">
+      <div class="container panel">
+        <h2>Packaging</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Build Script</strong> <code class="code">build-exe.ps1</code>로 PyInstaller 빌드를 수행합니다.</div>
+          <div class="feature"><strong>Spec</strong> <code class="code">SCT.spec</code>을 사용해 단일 실행 파일을 생성합니다.</div>
+          <div class="feature"><strong>Options</strong> <code class="code">-Clean</code>은 이전 결과를 삭제하고, <code class="code">-NoUpx</code>는 UPX 압축을 생략합니다.</div>
+          <div class="feature"><strong>Output</strong> 빌드된 결과물은 <code class="code">dist/</code>에 생성됩니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="notes">
+      <div class="container panel">
+        <h2>Additional Notes</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Profiles</strong> <code class="code">profilename</code>은 결과 파일명에 직접 쓰이므로 UI에서 충돌에 주의해야 합니다.</div>
+          <div class="feature"><strong>Export API</strong> <code class="code">/exporter</code>는 동기 <code class="code">wait</code>와 비동기 작업 큐를 모두 지원합니다.</div>
+          <div class="feature"><strong>Config</strong> <code class="code">data/</code>에는 <code class="code">web-setting.json</code> 같은 설정 파일도 저장될 수 있습니다.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© 2026 jyc8369. Vision Note detail page.</div>
+  </footer>
+  <script src="../common/project.js"></script>
+</body>
+</html>

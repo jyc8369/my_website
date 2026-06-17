@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Mod Translator Gemini (MMTG) | Project Detail</title>
+  <meta name="description" content="Minecraft Mod Translator Gemini 개발자 문서. Python 3.12+, customtkinter, google-genai, PyInstaller 기반 구조와 번역 흐름, 설정, 빌드 방법을 정리합니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/project.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="container">
+      <a class="brand" href="../../main.html">JYC8369</a>
+      <div class="links">
+        <a href="../../main.html">Home</a>
+        <a href="../../projects.html">Projects</a>
+        <a href="../../blog.html">Blog</a>
+        <a href="Minecraft_Mod_Translator_Gemini.html" aria-current="page">Detail</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="라이트 모드로 전환">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <span class="kicker">Project Detail</span>
+      <h1>Minecraft Mod Translator Gemini (MMTG)</h1>
+      <p class="summary">Minecraft 모드 JAR 내부의 언어 파일을 탐색하고, Google Gemini API로 번역한 뒤 다시 JAR로 패키징하는 도구의 개발자 문서입니다.</p>
+      <div class="actions">
+        <a class="btn primary" href="#overview">Overview</a>
+        <a class="btn" href="#structure">Structure</a>
+        <a class="btn" href="#build">Build</a>
+        <a class="btn" href="https://github.com/jyc8369/Minecraft_Mod_Translator_Gemini" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn" href="../../projects.html">목록으로</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="overview">
+      <div class="container panel">
+        <h2>Overview</h2>
+        <p>Minecraft 모드 JAR 파일 내부의 <code class="code">lang/*.json</code> 언어 파일을 탐색하고, Google Gemini API로 번역한 뒤 다시 JAR로 패키징하는 도구입니다.</p>
+        <div class="feature-list">
+          <div class="feature"><strong>Runtime</strong> Python 3.12+와 타입 힌트 기반 모듈 분리 구조를 사용합니다.</div>
+          <div class="feature"><strong>GUI</strong> customtkinter로 현대적인 데스크톱 UI를 제공합니다.</div>
+          <div class="feature"><strong>AI Translation</strong> google-genai로 key는 유지하고 value만 번역합니다.</div>
+          <div class="feature"><strong>Packaging</strong> PyInstaller 및 release/build 스크립트로 배포 패키지를 생성합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack">
+      <div class="container panel">
+        <h2>Tech Stack</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Runtime</strong> Python 3.12+</div>
+          <div class="feature"><strong>GUI</strong> customtkinter</div>
+          <div class="feature"><strong>AI API</strong> google-genai</div>
+          <div class="feature"><strong>Build</strong> PyInstaller</div>
+          <div class="feature"><strong>Core Libraries</strong> logging, threading, json, zipfile, pathlib, shutil</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="structure">
+      <div class="container panel">
+        <h2>Project Structure</h2>
+        <pre class="code-block"><code>. 
+├── main.py
+├── modules/
+│   ├── config.py
+│   ├── find_json.py
+│   ├── gemini_translator.py
+│   ├── i18n.py
+│   ├── unzip_jar.py
+│   └── zip_jar.py
+├── release/
+│   └── build/
+└── requirements.txt</code></pre>
+        <div class="feature-list">
+          <div class="feature"><strong>main.py</strong> GUI 진입점과 작업 흐름 오케스트레이션을 담당합니다.</div>
+          <div class="feature"><strong>modules/</strong> 설정, 탐색, 번역, 압축 해제/재압축, 다국어 문자열을 분리합니다.</div>
+          <div class="feature"><strong>release/build/</strong> 빌드 및 패키징 스크립트가 위치합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="container panel">
+        <h2>Core Flow</h2>
+        <p>프로그램은 입력부터 결과 저장까지 아래 순서로 동작합니다.</p>
+        <p><code class="code">JAR 또는 폴더 선택</code> -> <code class="code">임시 디렉터리 압축 해제</code> -> <code class="code">언어 파일 탐색</code> -> <code class="code">번역 대상 선정</code> -> <code class="code">Gemini 번역</code> -> <code class="code">파일 교체</code> -> <code class="code">JAR 재압축</code> -> <code class="code">결과 저장</code></p>
+        <div class="feature-list">
+          <div class="feature"><strong>JAR 처리</strong> 입력이 JAR이면 먼저 임시 폴더로 풀어서 내부 리소스를 분석합니다.</div>
+          <div class="feature"><strong>JSON 처리</strong> key는 유지하고 value만 번역한 뒤 원본 구조를 보존합니다.</div>
+          <div class="feature"><strong>Result</strong> 번역 완료 후 다시 압축해 결과를 저장합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="translation">
+      <div class="container panel">
+        <h2>Gemini Translation</h2>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/jyc8369/Minecraft_Mod_Translator_Gemini" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+        </div>
+        <div class="feature-list" style="margin-top: 16px;">
+          <div class="feature"><strong>Chunking</strong> 큰 JSON 파일은 <code class="code">MAX_CHUNK_CHARS</code>와 <code class="code">MAX_CHUNK_ITEMS</code> 기준으로 나눠 보냅니다.</div>
+          <div class="feature"><strong>Retries</strong> <code class="code">MAX_RETRIES</code>와 <code class="code">RETRY_BASE_DELAY</code> 기반의 재시도 로직을 사용합니다.</div>
+          <div class="feature"><strong>Prompt Rules</strong> JSON 키 변경 금지와 Minecraft 플레이스홀더 보존 규칙을 명시합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="config">
+      <div class="container panel">
+        <h2>Config & UI</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Config Path</strong> Windows, macOS, Linux의 표준 설정 경로에 <code class="code">MMTG/config.json</code>을 저장합니다.</div>
+          <div class="feature"><strong>Auto Creation</strong> 초기 실행 시 설정 파일이 없으면 자동 생성합니다.</div>
+          <div class="feature"><strong>Async UI</strong> 번역 작업은 <code class="code">threading</code>으로 백그라운드 실행합니다.</div>
+          <div class="feature"><strong>Logging</strong> 커스텀 logging handler로 로그를 GUI 창에 실시간 출력합니다.</div>
+          <div class="feature"><strong>i18n</strong> 한국어와 영어 UI를 지원합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="build">
+      <div class="container panel">
+        <h2>Build & Deployment</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Windows</strong> <code class="code">release/build/build_windows.bat</code></div>
+          <div class="feature"><strong>macOS</strong> <code class="code">release/build/build_macos.sh</code></div>
+          <div class="feature"><strong>Linux Packages</strong> Ubuntu/Debian은 <code class="code">.deb</code>, Fedora는 <code class="code">.rpm</code>, Arch는 <code class="code">.pkg.tar.zst</code>를 생성합니다.</div>
+          <div class="feature"><strong>Cleanup</strong> 빌드 후 <code class="code">build/</code> 폴더를 삭제합니다.</div>
+        </div>
+        <p style="margin-top: 16px;">요구 사항은 Python 3.12+와 <code class="code">pip install -r requirements.txt</code> 입니다.</p>
+      </div>
+    </section>
+
+    <section id="development">
+      <div class="container panel">
+        <h2>Development Notes</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>UI Language Add</strong> `modules/i18n.py`의 `TRANSLATIONS`와 `SUPPORTED_UI_LANGS`를 함께 수정합니다.</div>
+          <div class="feature"><strong>Target Languages</strong> `modules/find_json.py`의 `LANGUAGE_PRIORITY`를 조정합니다.</div>
+          <div class="feature"><strong>Reference</strong> 번역 로직은 `main.py`와 `modules/`가 담당합니다.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© 2026 jyc8369. Vision Note detail page.</div>
+  </footer>
+  <script src="../common/project.js"></script>
+</body>
+</html>
